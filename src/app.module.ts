@@ -11,12 +11,13 @@ import { Article } from './article/model/article.entity';
   imports: [ConfigModule.forRoot({envFilePath:".env",isGlobal:true}),
     SequelizeModule.forRoot({
       dialect:"postgres",
-      host:"localhost",
+      host:"127.0.0.1",
       port:5432,
       username:"postgres",
       database:String(process.env.DB_NAME as string),
       password:String(process.env.DB_PASSWORD as string),
-      models:[Auth,Article],
+      // models:[Auth,Article],
+      autoLoadModels: true,
       synchronize:true,
       logging:false
 

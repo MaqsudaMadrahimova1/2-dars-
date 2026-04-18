@@ -1,6 +1,7 @@
 import { DataTypes, Optional } from "sequelize";
-import { Column, HasMany, Model, Table } from "sequelize-typescript";
-import { Article } from "../../article/model/article.entity"; // Adjust the path as necessary
+import { BeforeCreate, Column, HasMany, Model, Table } from "sequelize-typescript";
+import { Article } from "../../article/model/article.entity"; 
+import * as bcrypt from 'bcrypt';
 
 interface AuthAttributes {
     id: number;
@@ -31,7 +32,7 @@ export class Auth extends Model<AuthAttributes, AuthAttributesTypes> {
         type: DataTypes.STRING,
         allowNull: false,
  } )
- email!: string;
+       declare email: string;
     @Column({
         type: DataTypes.STRING,
         allowNull: false,
@@ -42,9 +43,13 @@ export class Auth extends Model<AuthAttributes, AuthAttributesTypes> {
        type: DataTypes.STRING,
          allowNull: false,
  } ) 
-    otp!: string;
+    declare otp: string;
 
     @HasMany(() => Article)
     articles?: Article[];
+    @BeforeCreate
+    static async hashPassword(user: Auth) {
+        user.password = await bcrypt.hash(user.password, 10);
+    }
 }
 

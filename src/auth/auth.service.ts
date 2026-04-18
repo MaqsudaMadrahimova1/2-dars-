@@ -9,6 +9,7 @@ export class AuthService {
   constructor(@InjectModel(Auth) private authModel: typeof Auth) {}
 
    async register(createAuthDto: CreateAuthDto) {
+    const foundedUser = await this.authModel.findOne({ where: { email: createAuthDto.email } });
     return this.authModel.create({ ...createAuthDto, otp: "12456" });
   }
 
