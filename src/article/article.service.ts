@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
+import { Article } from './model/article.entity';
 
 @Injectable()
 export class ArticleService {
-  create(createArticleDto: CreateArticleDto) {
-    return 'This action adds a new article';
+  constructor(@InjectModel(Article) private articleModel: typeof Article) {}
+  async create(createArticleDto: CreateArticleDto) {
+    const user = await this.articleModel.create(createArticleDto)
+    return user ;
   }
 
   findAll() {
@@ -24,3 +27,7 @@ export class ArticleService {
     return `This action removes a #${id} article`;
   }
 }
+function InjectModel(Article: typeof Article): (target: typeof ArticleService, propertyKey: undefined, parameterIndex: 0) => void {
+  throw new Error('Function not implemented.');
+}
+
