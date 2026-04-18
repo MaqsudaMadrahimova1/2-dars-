@@ -1,8 +1,20 @@
-import { DataTypes } from "sequelize";
-import { Column, Model, Table } from "sequelize-typescript";
+import { DataTypes, Optional } from "sequelize";
+import { Column, HasMany, Model, Table } from "sequelize-typescript";
+import { Article } from "../../article/model/article.entity"; // Adjust the path as necessary
+
+interface AuthAttributes {
+    id: number;
+    username: string;
+    email: string;
+    password: string;
+    otp: string;
+}
+
+type AuthAttributesTypes = Optional<AuthAttributes, 'id'>;
 
 @Table
-export class Auth extends Model {
+export class Auth extends Model<AuthAttributes, AuthAttributesTypes> {
+    
  @Column({
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -31,5 +43,8 @@ export class Auth extends Model {
          allowNull: false,
  } ) 
     otp!: string;
+
+    @HasMany(() => Article)
+    articles?: Article[];
 }
 

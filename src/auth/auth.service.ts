@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { Auth } from './model/auth.entity';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(@InjectModel(Auth) private authModel: typeof Auth) {}
+
+   async register(createAuthDto: CreateAuthDto) {
+    return this.authModel.create({ ...createAuthDto, otp: "12456" });
   }
 
   findAll() {
